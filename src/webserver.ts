@@ -76,8 +76,7 @@ class App {
     }
 
     public reminderLoop(): void {
-        reminder().then(() => console.log("a")).catch(() => console.log("mogus"));
-        new cron.CronJob("0 0 * * *", reminder, null, true).start();
+        new cron.CronJob("0 0 * * *", reminder, null, true, "Europe/Amsterdam").start();
     }
 
     public listen(): void {
