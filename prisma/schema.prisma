@@ -31,7 +31,6 @@ model project {
 
   name         String         @db.VarChar(32)
   description  String?        @db.VarChar(256)
-  external_url String?        @db.VarChar(256)
   markdown     String?        @db.VarChar(4096)
   status       project_status @default(unknown)
   projects     Boolean        @default(false) @db.Boolean()
@@ -39,6 +38,18 @@ model project {
 
   assets asset[]
   tags   tag[]
+  links  link[]
+}
+
+model link {
+  created    DateTime @default(now()) @db.Timestamp(0)
+  project_id String   @db.Uuid
+
+  uuid String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name String @db.VarChar(32)
+  url  String @db.VarChar(256)
+
+  projects project @relation(fields: [project_id], references: [uuid])
 }
 
 model tag {

@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
+import revalidate from "../../../util/revalidate.service";
 import ProjectPatchDto from "./project.patch.dto";
 
 const patchProject = async (req: Request, res: Response, db: PrismaClient): Promise<void> => {
-    const { uuid, name, description, status, created, markdown, external_url, projects, pinned } = req.body as ProjectPatchDto;
+    const { uuid, name, description, status, created, markdown, projects, pinned } = req.body as ProjectPatchDto;
 
     let { tags } = req.body;
 
@@ -18,7 +19,6 @@ const patchProject = async (req: Request, res: Response, db: PrismaClient): Prom
             description,
             markdown,
             status,
-            external_url,
             projects,
             pinned,
             tags: { set: tagArray },
@@ -28,6 +28,8 @@ const patchProject = async (req: Request, res: Response, db: PrismaClient): Prom
     });
 
     res.json({ project: project });
+    await revalidate(`project/${project.uuid}`);
+    await revalidate(`browse`);
 };
 
 export default patchProject;

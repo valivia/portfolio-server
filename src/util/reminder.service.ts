@@ -14,7 +14,7 @@ export default async function reminder(): Promise<void> {
     let html = "<h1>Beep boop these are the projects that have not been edited for 30 days</h1>";
     html += "<ul>";
     for (const project of query) {
-        html += `<li><a href="https://${process.env.CLIENT_URL}/project/${project.uuid}">${project.name}</a> - ${Math.round((Date.now() - Number(project.updated)) / (1000 * 60 * 60 * 24))} days</li>`;
+        html += `<li><a href="${process.env.CLIENT_URL}/project/${project.uuid}">${project.name}</a> - ${Math.round((Date.now() - Number(project.updated)) / (1000 * 60 * 60 * 24))} days</li>`;
     }
     html += "</ul>";
 

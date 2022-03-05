@@ -4,10 +4,11 @@ import { v4 as uuidv4 } from "uuid";
 import HttpException from "../../../exceptions/httpExceptions";
 import ServerErrorException from "../../../exceptions/serverError";
 import ImageService from "../../../util/image.service";
+import revalidate from "../../../util/revalidate.service";
 import ProjectPostDto from "./project.post.dto";
 
 const postProject = async (req: Request, res: Response, db: PrismaClient): Promise<void> => {
-    const { name, description, status, created, markdown, external_url } = req.body as ProjectPostDto;
+    const { name, description, status, created, markdown } = req.body as ProjectPostDto;
     const projects = (req.body as ProjectPostDto).projects == "true";
     const pinned = (req.body as ProjectPostDto).pinned == "true";
 
@@ -49,7 +50,6 @@ const postProject = async (req: Request, res: Response, db: PrismaClient): Promi
             status,
             projects,
             pinned,
-            external_url,
             tags: {
                 connect: tagArray,
             },
@@ -58,7 +58,9 @@ const postProject = async (req: Request, res: Response, db: PrismaClient): Promi
         include: { tags: true },
     });
 
-    res.json({ uuid: project });
+    res.json({ project });
+    await revalidate(`project/${project.uuid}`);
+    await revalidate(`browse`);
 };
 
 export default postProject;

@@ -1,5 +1,5 @@
 import { project_status } from "@prisma/client";
-import { Length, IsString, IsUUID, IsDefined, IsDateString, IsOptional, IsUrl, IsBooleanString } from "class-validator";
+import { Length, IsString, IsUUID, IsDefined, IsDateString, IsOptional, IsBooleanString } from "class-validator";
 
 class ProjectPostDto {
 
@@ -15,10 +15,6 @@ class ProjectPostDto {
     @IsOptional()
     @Length(0, 4096)
     public markdown: string;
-
-    @IsOptional()
-    @IsUrl()
-    public external_url: string;
 
     @IsUUID(4, { each: true })
     public tags: number[];

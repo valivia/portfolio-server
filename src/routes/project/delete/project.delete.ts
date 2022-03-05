@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import NotFoundException from "../../../exceptions/notFound";
 import deleteAsset from "../../../util/deleteAsset.service";
+import revalidate from "../../../util/revalidate.service";
 
 const deleteProject = async (req: Request, res: Response, db: PrismaClient): Promise<void> => {
     const uuid = req.body.uuid;
@@ -18,6 +19,9 @@ const deleteProject = async (req: Request, res: Response, db: PrismaClient): Pro
     assets.forEach((asset) => { deleteAsset(asset.uuid); });
 
     res.json(":)");
+
+    await revalidate(`project/${uuid}`);
+    await revalidate(`browse`);
 };
 
 export default deleteProject;

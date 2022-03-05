@@ -50,7 +50,7 @@ class ProjectController implements Controller {
         this.router.patch(
             this.path,
             authMiddleware,
-            validationMiddleware(ProjectPatchDto, true),
+            validationMiddleware(ProjectPatchDto),
             this.patch_project,
         );
     }
@@ -68,7 +68,9 @@ class ProjectController implements Controller {
     }
 
     private patch_project = (req: Request, res: Response, next: NextFunction) => {
-        patchProject(req, res, this.db).catch((e: Error) => { next(e); });
+        patchProject(req, res, this.db).catch((e: Error) => {
+            next(e); console.log(e);
+        });
     }
 
     private delete_project = (req: Request, res: Response, next: NextFunction) => {
