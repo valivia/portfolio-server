@@ -19,7 +19,7 @@ export default class GetGalleryService {
                 uuid: asset.uuid,
                 created: Number(asset.project.created),
                 name: asset.project.name,
-                thumbnail: asset.thumbnail,
+                thumbnail: asset.project.banner_id == asset.uuid,
                 status: asset.project.status,
                 project_uuid: asset.project.uuid,
                 tags: asset.project.tags,

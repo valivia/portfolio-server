@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import NotFoundException from "../../../exceptions/notFound";
 import deleteAsset from "../../../util/deleteAsset.service";
+import revalidate from "../../../util/revalidate.service";
 
 const deleteContent = async (req: Request, res: Response, db: PrismaClient): Promise<void> => {
     const uuid = req.body.uuid;
@@ -10,12 +11,13 @@ const deleteContent = async (req: Request, res: Response, db: PrismaClient): Pro
 
     if (!assets) throw new NotFoundException();
 
-    const deleteAssets = await db.asset.delete({ where: { uuid: uuid } });
-    await db.project.update({ where: { uuid: deleteAssets.project_id }, data: { updated: new Date() } });
+    const asset = await db.asset.delete({ where: { uuid: uuid } });
+    await db.project.update({ where: { uuid: asset.project_id }, data: { updated: new Date() } });
 
-    deleteAsset(deleteAssets.uuid);
+    deleteAsset(asset.uuid);
+    res.json(asset);
 
-    res.json(":)");
+    await revalidate(`project/${uuid}`);
 };
 
 export default deleteContent;

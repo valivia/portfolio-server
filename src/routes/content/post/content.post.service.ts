@@ -5,12 +5,13 @@ import { v4 as uuidv4 } from "uuid";
 import HttpException from "../../../exceptions/httpExceptions";
 import ServerErrorException from "../../../exceptions/serverError";
 import ImageService from "../../../util/image.service";
+import revalidate from "../../../util/revalidate.service";
 import ContentPostDto from "./content.post.dto";
 
 
 const postContent = async (req: Request, res: Response, db: PrismaClient): Promise<void> => {
 
-    const { uuid, display, alt } = req.body as ContentPostDto;
+    const { uuid, display, alt, description } = req.body as ContentPostDto;
 
     if (!req?.file?.buffer) throw new HttpException(400, "No image attached.");
 
@@ -21,10 +22,11 @@ const postContent = async (req: Request, res: Response, db: PrismaClient): Promi
 
     const content = await db.asset.create({
         data: {
-            width: width,
-            height: height,
+            width,
+            height,
+            description,
+            alt,
             uuid: gallery_uuid,
-            alt: alt || null,
             display: display === "true",
             project_id: uuid,
             type: asset_type.image,
@@ -37,7 +39,9 @@ const postContent = async (req: Request, res: Response, db: PrismaClient): Promi
         throw new ServerErrorException();
     }
 
-    res.json({ uuid: content.uuid });
+    res.json({ content });
+
+    await revalidate(`project/${uuid}`);
 };
 
 export default postContent;

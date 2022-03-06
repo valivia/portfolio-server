@@ -1,21 +1,24 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
+import revalidate from "../../../util/revalidate.service";
 import ContentPatchDto from "./content.patch.dto";
 
 const patchContent = async (req: Request, res: Response, db: PrismaClient): Promise<void> => {
-    const { alt, display, thumbnail, uuid } = req.body as ContentPatchDto;
+    const { alt, description, display, uuid } = req.body as ContentPatchDto;
 
-    const project = await db.asset.update({
+    const asset = await db.asset.update({
         data: {
-            alt: alt?.substr(0, 127),
+            alt: alt?.substring(0, 127),
+            description: description?.substring(0, 127),
             display,
-            thumbnail,
             project: { update: { updated: new Date() } },
         },
         where: { uuid },
     });
 
-    res.json({ uuid: project.uuid });
+    res.json({ asset });
+
+    await revalidate(`project/${uuid}`);
 };
 
 export default patchContent;

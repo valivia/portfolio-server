@@ -43,7 +43,7 @@ class ProjectController implements Controller {
             this.path,
             mult.single("banner"),
             authMiddleware,
-            validationMiddleware(ProjectPostDto, true),
+            validationMiddleware(ProjectPostDto),
             this.post_project,
         );
 
@@ -68,9 +68,7 @@ class ProjectController implements Controller {
     }
 
     private patch_project = (req: Request, res: Response, next: NextFunction) => {
-        patchProject(req, res, this.db).catch((e: Error) => {
-            next(e); console.log(e);
-        });
+        patchProject(req, res, this.db).catch((e: Error) => { next(e); });
     }
 
     private delete_project = (req: Request, res: Response, next: NextFunction) => {

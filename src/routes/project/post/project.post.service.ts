@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import HttpException from "../../../exceptions/httpExceptions";
 import ServerErrorException from "../../../exceptions/serverError";
+import deleteAsset from "../../../util/deleteAsset.service";
 import ImageService from "../../../util/image.service";
 import revalidate from "../../../util/revalidate.service";
 import ProjectPostDto from "./project.post.dto";
@@ -21,9 +22,9 @@ const postProject = async (req: Request, res: Response, db: PrismaClient): Promi
     const tagArray: { uuid: string }[] = tags.map(((x: string) => ({ uuid: x })));
 
     if (!file && !projects) throw new HttpException(400, "This project would be invisible");
+    const fileName = uuidv4();
 
     if (file) {
-        const fileName = uuidv4();
         const imageProcessing = new ImageService(file);
         const { height, width } = await imageProcessing.getMetadata();
         assets = {
@@ -33,8 +34,6 @@ const postProject = async (req: Request, res: Response, db: PrismaClient): Promi
                 uuid: fileName,
                 type: asset_type.image,
                 display: true,
-                thumbnail: true,
-
             },
         };
 
@@ -50,17 +49,23 @@ const postProject = async (req: Request, res: Response, db: PrismaClient): Promi
             status,
             projects,
             pinned,
-            tags: {
-                connect: tagArray,
-            },
             assets,
+            banner_id: file ? fileName : null,
+            tags: { connect: tagArray },
         },
         include: { tags: true },
+    }).catch(async (x) => {
+        console.log(x);
+        if (file) await deleteAsset(fileName);
+        return null;
     });
+
+    if (!project) throw new ServerErrorException();
 
     res.json({ project });
     await revalidate(`project/${project.uuid}`);
     await revalidate(`browse`);
+    if (projects) await revalidate(`projects`);
 };
 
 export default postProject;

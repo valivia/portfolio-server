@@ -24,12 +24,14 @@ const patchProject = async (req: Request, res: Response, db: PrismaClient): Prom
             tags: { set: tagArray },
             updated: new Date(),
         },
+        include: { tags: true },
         where: { uuid },
     });
 
-    res.json({ project: project });
+    res.json({ project });
     await revalidate(`project/${project.uuid}`);
     await revalidate(`browse`);
+    if (projects) await revalidate(`projects`);
 };
 
 export default patchProject;

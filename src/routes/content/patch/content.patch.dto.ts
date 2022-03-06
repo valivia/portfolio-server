@@ -15,10 +15,6 @@ class ContentPatchDto {
 
     @IsBoolean()
     public display: boolean;
-
-    @IsBoolean()
-    public thumbnail: boolean;
-
 }
 
 export default ContentPatchDto;

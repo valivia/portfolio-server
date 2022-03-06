@@ -11,6 +11,8 @@ import deleteContent from "./delete/content.delete.service";
 import ContentDeleteDto from "./delete/content.delete.dto";
 import ContentPatchDto from "./patch/content.patch.dto";
 import patchContent from "./patch/content.patch.service";
+import ContentPostBannerDto from "./post/content.post.banner.dto";
+import patchBanner from "./post/content.post.banner.service";
 const mult = multer();
 
 class ContentController implements Controller {
@@ -33,6 +35,12 @@ class ContentController implements Controller {
             validationMiddleware(ContentPostDto),
             this.post_content);
 
+        this.router.patch(
+            "/banner",
+            authMiddleware,
+            validationMiddleware(ContentPostBannerDto),
+            this.post_banner);
+
         this.router.delete(
             this.path,
             authMiddleware,
@@ -48,6 +56,10 @@ class ContentController implements Controller {
 
     private post_content = (req: Request, res: Response, next: NextFunction) => {
         postContent(req, res, this.db).catch((e: Error) => { next(e); });
+    }
+
+    private post_banner = (req: Request, res: Response, next: NextFunction) => {
+        patchBanner(req, res, this.db).catch((e: Error) => { next(e); });
     }
 
     private delete_content = (req: Request, res: Response, next: NextFunction) => {

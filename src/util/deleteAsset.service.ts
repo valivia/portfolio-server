@@ -6,5 +6,6 @@ const dir = path.join(process.cwd(), "assets", "content");
 export default function deleteAsset(name: string): void {
     const list = ["default", "high", "medium", "low", "lowest", "square"];
     Promise.all(list
-        .map(size => fs.promises.unlink(path.join(dir, `${name}_${size}.jpg`))));
+        .map(size => fs.promises.unlink(path.join(dir, `${name}_${size}.jpg`)).catch(x => console.error(x))),
+    ).catch(x => console.error(x));
 }

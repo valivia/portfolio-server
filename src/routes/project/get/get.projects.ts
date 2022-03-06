@@ -5,7 +5,7 @@ export default async function GetProjectsService(req: Request, res: Response, db
     const projects = req.query.projects == "true";
     const where = projects ? { projects } : {};
 
-    const response = await db.project.findMany({ include: { assets: true, tags: true }, where });
+    const response = await db.project.findMany({ include: { assets: true, tags: true }, where, orderBy: { created: "desc" } });
 
     res.json(response);
 }
