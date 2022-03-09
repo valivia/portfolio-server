@@ -14,6 +14,7 @@ const patchBanner = async (req: Request, res: Response, db: PrismaClient): Promi
     res.json({ out });
 
     await revalidate(`project/${project}`);
+    await revalidate(`browse`);
 };
 
 export default patchBanner;
