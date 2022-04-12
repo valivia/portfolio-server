@@ -15,6 +15,7 @@ import ContactController from "./routes/contact/contact.controller";
 import TagsController from "./routes/tags/tags.controller";
 import AuthController from "./routes/auth/auth.controller";
 import ContentController from "./routes/content/content.controller";
+import WebhookController from "./routes/webhook/webhook.controller";
 
 const controllers = [
     new AssetController(),
@@ -24,6 +25,7 @@ const controllers = [
     new TagsController(),
     new AuthController(),
     new ContentController(),
+    new WebhookController(),
 ];
 
 const app = new App(controllers);

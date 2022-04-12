@@ -4,6 +4,13 @@ function validateEnv(): void {
     cleanEnv(process.env, {
         NODE_ENV: str({ choices: ["development", "test", "production"] }),
 
+        // auth
+        TFA_SECRET: str(),
+        JWT_SECRET: str(),
+        CLIENT_SECRET: str(),
+        CLIENT_URL: url(),
+        WEBHOOK_SECRET: str(),
+
         // web
         PORT: port(),
         COOKIETOKEN: str(),
@@ -14,6 +21,7 @@ function validateEnv(): void {
 
         // content
         AUTHOR: str(),
+        SOCIAL_INSTAGRAM: url(),
 
         // Email
         EMAIL_HOST: host(),
