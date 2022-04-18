@@ -39,7 +39,7 @@ const postContent = async (req: Request, res: Response, db: PrismaClient): Promi
         throw new ServerErrorException();
     }
 
-    res.json({ content });
+    res.json({ asset: content });
 
     await revalidate(`project/${uuid}`);
 };

@@ -16,7 +16,7 @@ const patchContent = async (req: Request, res: Response, db: PrismaClient): Prom
         where: { uuid },
     });
 
-    res.json({ asset });
+    res.json({ asset: asset });
 
     await revalidate(`project/${uuid}`);
 };
