@@ -53,7 +53,7 @@ const postProject = async (req: Request, res: Response, db: PrismaClient): Promi
             banner_id: file ? fileName : null,
             tags: { connect: tagArray },
         },
-        include: { tags: true },
+        include: { tags: true, assets: true },
     }).catch(async (x) => {
         console.log(x);
         if (file) await deleteAsset(fileName);

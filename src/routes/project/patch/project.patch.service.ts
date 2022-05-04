@@ -24,7 +24,7 @@ const patchProject = async (req: Request, res: Response, db: PrismaClient): Prom
             tags: { set: tagArray },
             updated: new Date(),
         },
-        include: { tags: true },
+        include: { tags: true, assets: true },
         where: { uuid },
     });
 
