@@ -25,7 +25,7 @@ class ContactController implements Controller {
         try {
             const { firstName, lastName, email, subject, message }: ContactDto = req.body;
             const mailService = new EmailService();
-            mailService.sendEmail(subject, `message:\n${message}\nsent by:\n${firstName} ${lastName}\n${email}\nIP: ${req.ip} - ${req.headers["cf-ipcountry"]}`);
+            mailService.sendEmail(process.env.EMAIL_TARGET as string, subject, `message:\n${message}\nsent by:\n${firstName} ${lastName}\n${email}\nIP: ${req.ip} - ${req.headers["cf-ipcountry"]}`);
 
             res.status(200).send("Email sent");
         } catch {
