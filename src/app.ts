@@ -16,6 +16,7 @@ import TagsController from "./routes/tags/tags.controller";
 import AuthController from "./routes/auth/auth.controller";
 import ContentController from "./routes/content/content.controller";
 import WebhookController from "./routes/webhook/webhook.controller";
+import MailingListController from "./routes/mailing/mailing.controller";
 
 const controllers = [
     new AssetController(),
@@ -26,6 +27,7 @@ const controllers = [
     new AuthController(),
     new ContentController(),
     new WebhookController(),
+    new MailingListController(),
 ];
 
 const app = new App(controllers);

@@ -50,6 +50,14 @@ model project {
   links  link[]
 }
 
+model mailing_list {
+  created DateTime @default(now()) @db.Timestamp(0)
+  uuid    String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+
+  email    String  @unique @db.VarChar(256)
+  verified Boolean @default(false) @db.Boolean()
+}
+
 model link {
   created    DateTime @default(now()) @db.Timestamp(0)
   project_id String   @db.Uuid
@@ -80,5 +88,5 @@ enum project_status {
   in_progress  @map("in Progress")
   abandoned
   unknown
-  on_hold  @map("On Hold")
+  on_hold      @map("On Hold")
 }

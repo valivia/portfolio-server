@@ -19,5 +19,5 @@ export default async function reminder(): Promise<void> {
     html += "</ul>";
 
     const mailing = new EmailService();
-    await mailing.sendEmail("Project Status Reminder", "a", html);
+    await mailing.sendEmail(process.env.EMAIL_TARGET as string, "Project Status Reminder", html);
 }
