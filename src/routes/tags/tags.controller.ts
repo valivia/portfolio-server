@@ -11,7 +11,7 @@ class TagsController implements Controller {
     }
 
 
-    private getTags = async (req: Request, res: Response, next: NextFunction) => {
+    private getTags = async (_req: Request, res: Response, next: NextFunction) => {
         res.json(await prisma.tag.findMany().catch((e: Error) => { next(e); }));
     }
 
