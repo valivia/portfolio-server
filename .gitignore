@@ -8,7 +8,7 @@ dist
 .env
 
 # assets
-/assets
+/media
 
 # public
 src/public

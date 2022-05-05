@@ -94,9 +94,9 @@ export default class ImageService {
     public async makeAssets(fileName: string): Promise<boolean> {
         try {
 
-            const path = `./assets/content/${fileName}`;
+            const path = `./media/content/${fileName}`;
             await Promise.all([
-                fs.promises.writeFile(`./assets/archive/${fileName}.jpg`, this.buffer),
+                fs.promises.writeFile(`./media/archive/${fileName}.jpg`, this.buffer),
                 this.resizeImageAbs(3840 * 2160).then(data => fs.promises.writeFile(`${path}_default.jpg`, data)),
                 this.resizeImageAbs(2560 * 1440).then(data => fs.promises.writeFile(`${path}_high.jpg`, data)),
                 this.resizeImageAbs(1920 * 1080).then(data => fs.promises.writeFile(`${path}_medium.jpg`, data)),
