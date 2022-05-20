@@ -16,6 +16,7 @@ import AuthController from "./routes/auth/auth.controller";
 import ContentController from "./routes/content/content.controller";
 import WebhookController from "./routes/webhook/webhook.controller";
 import MailingListController from "./routes/mailing/mailing.controller";
+import StatusController from "./routes/status/status.controller";
 
 const controllers = [
     new BrowseController(),
@@ -26,6 +27,7 @@ const controllers = [
     new ContentController(),
     new WebhookController(),
     new MailingListController(),
+    new StatusController(),
 ];
 
 const app = new App(controllers);
