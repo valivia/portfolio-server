@@ -17,9 +17,7 @@ const env = process.env;
 class App {
     private app: Application;
 
-    constructor(
-        controllers: Controller[],
-    ) {
+    constructor(controllers: Controller[]) {
         this.app = express();
 
         this.initializeMiddlewares();
@@ -39,11 +37,20 @@ class App {
         this.app.use(helmet());
         this.app.use((req, res, next) => {
             res.header("Access-Control-Allow-Credentials", "true");
-            res.header("Access-Control-Allow-Origin", `${process.env.CLIENT_URL}`);
-            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+            res.header(
+                "Access-Control-Allow-Origin",
+                `${process.env.CLIENT_URL}`,
+            );
+            res.header(
+                "Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+            );
 
             if (req.method == "OPTIONS") {
-                res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+                res.header(
+                    "Access-Control-Allow-Methods",
+                    "PUT, POST, PATCH, DELETE, GET",
+                );
                 res.status(200).json({});
                 return;
             }
@@ -65,7 +72,9 @@ class App {
     }
 
     private initializeErrorHandling() {
-        this.app.use((_req, _res, next) => { next(new NotFoundException); });
+        this.app.use((_req, _res, next) => {
+            next(new NotFoundException());
+        });
         this.app.use(errorMiddleware);
 
         console.log(" ✓ Error handler initialized:".green.bold);
@@ -76,12 +85,21 @@ class App {
     }
 
     public reminderLoop(): void {
-        new cron.CronJob("0 0 * * *", reminder, null, true, "Europe/Amsterdam").start();
+        new cron.CronJob(
+            "0 0 * * *",
+            reminder,
+            null,
+            true,
+            "Europe/Amsterdam",
+        ).start();
     }
 
     public listen(): void {
         this.app.listen(env.PORT, () => {
-            console.log(` > Web server ready at port ${env.PORT} - ${env.NODE_ENV}`.green.bold);
+            console.log(
+                ` > Web server ready at port ${env.PORT} - ${env.NODE_ENV}`
+                    .green.bold,
+            );
         });
     }
 }

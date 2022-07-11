@@ -10,11 +10,24 @@ class TagsController implements Controller {
         this.router.get(this.path, this.getTags);
     }
 
-
-    private getTags = async (_req: Request, res: Response, next: NextFunction) => {
-        res.json(await prisma.tag.findMany().catch((e: Error) => { next(e); }));
-    }
-
+    private getTags = async (
+        _req: Request,
+        res: Response,
+        next: NextFunction,
+    ) => {
+        try {
+            const tags = await prisma.tag.findMany({
+                select: {
+                    uuid: true,
+                    name: true,
+                },
+                orderBy: { name: "asc" },
+            });
+            res.json(tags);
+        } catch (err) {
+            next(err);
+        }
+    };
 }
 
 export default TagsController;

@@ -5,7 +5,8 @@ require("dotenv").config();
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("colors").enable();
 
-import validateEnv from "./util/ValidateENV"; validateEnv();
+import validateEnv from "./util/ValidateENV";
+validateEnv();
 
 import App from "./webserver";
 import BrowseController from "./routes/gallery/gallery.controller";
@@ -16,7 +17,8 @@ import AuthController from "./routes/auth/auth.controller";
 import ContentController from "./routes/content/content.controller";
 import WebhookController from "./routes/webhook/webhook.controller";
 import MailingListController from "./routes/mailing/mailing.controller";
-import StatusController from "./routes/status/status.controller";
+import ExperienceController from "./routes/experience/experience.controller";
+import EnumController from "./routes/enum/enum.controller";
 
 const controllers = [
     new BrowseController(),
@@ -27,7 +29,8 @@ const controllers = [
     new ContentController(),
     new WebhookController(),
     new MailingListController(),
-    new StatusController(),
+    new ExperienceController(),
+    new EnumController(),
 ];
 
 const app = new App(controllers);
